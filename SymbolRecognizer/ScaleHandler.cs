@@ -7,20 +7,19 @@ using System.Drawing;
 
 namespace SymbolRecognizer
 {
-    public class TransformSize
+    public class ScaleHandler
     {
         public BitmapAsArrayOfColors bitmapAsArrayOfColors;
 
-        //все методы статические из-за единственности рабочей области(левый пикчербокс)
-        //(для удобства короче)
-        public static double KoefficientX;
-        public static double KoefficientY;
+        public double CoefficientX;
+        public double CoefficientY;
+
         public int width;
         public int height;
-        private int TempWidthOfWorkWindow;
-        private int TempHeightOfWorkWindow;
+        public int TempWidthOfWorkWindow;
+        public int TempHeightOfWorkWindow;
 
-        public TransformSize(int width, int height)
+        public ScaleHandler(int width, int height)
         {
             this.width = width;
             this.height = height;
@@ -29,7 +28,7 @@ namespace SymbolRecognizer
         }
 
         //Выявление координат крайних точек
-        public void Tsentrovka_Koefficienti(out int mostLeft, out int mostTop, out int mostRight, out int mostDown)
+        public void FindScalingCoefficients(out int mostLeft, out int mostTop, out int mostRight, out int mostDown)
         {
             mostRight = 0;//Аргументы для процедуры вычисления крайних i,j
             mostDown = 0;
@@ -46,12 +45,15 @@ namespace SymbolRecognizer
                         if (j >= mostDown) mostDown = j;//Отсеивание самого нижнего пикселя
                     }
 
-            KoefficientX = (double)width / (double)(mostRight - mostLeft);//Коэффициенты уравнивания изображения с рабочей областью
-            KoefficientY = (double)height / (double)(mostDown - mostTop);//Оптимальными являются 0 < x <= 2
+            //Коэффициенты уравнивания изображения с рабочей областью.
+            //(оптимальными являются 0 < x <= 2, т.к. при масштабировании(см.ниже) 
+            //будут возникать белые пробелы между черными пикселями толщиной 1 пиксель).
+            CoefficientX = (double)width / (double)(mostRight - mostLeft);
+            CoefficientY = (double)height / (double)(mostDown - mostTop);
         }
-        
-        //Масштабирует умножением на k(или 2) координат нового массива относительно старого
-        public void Masshtabirovanie()
+
+        //Масштабирует умножением на значение Coefficient(или на 2)
+        public void BeginScale()
         {
             int i1;//Увеличенные координаты
             int j1;
@@ -64,41 +66,42 @@ namespace SymbolRecognizer
                 for (int j = 0; j < TempHeightOfWorkWindow; j++)
                     bitmapAsArrayOfColors.TempArrayOfColors1[i, j] = Color.White;
 
-            Tsentrovka_Koefficienti(out mostLeft, out mostTop, out mostRight, out mostDown);//Получение коэффициентов масштабирования kx,ky
+            FindScalingCoefficients(out mostLeft, out mostTop, out mostRight, out mostDown);//Получение коэффициентов масштабирования kx,ky
 
-            //Максимальное увеличение х2 за раз(из-за того что устранение полос работает в промежутке толщиной 1 пиксель, а такую толщину можно получить при упомянутом коэффициенте)
-            if (KoefficientX <= 2 && KoefficientY <= 2)
+            //Максимальное увеличение х2 за раз(из-за того что устранение полос работает в промежутке толщиной 1 пиксель,
+            //а такую толщину можно получить при данном коэффициенте)
+            if (CoefficientX <= 2 && CoefficientY <= 2)
             {
                 for (int i = 0; i < width; i++)//Масштабирование в k раз
                     for (int j = 0; j < height; j++)
                         if (ColorsComparer.CompareColors(bitmapAsArrayOfColors.ArrayOfColors[i, j], Color.Black))
                         {
-                            i1 = (int)Math.Round((double)i * KoefficientX);
-                            j1 = (int)Math.Round((double)j * KoefficientY);
+                            i1 = (int)Math.Round((double)i * CoefficientX);
+                            j1 = (int)Math.Round((double)j * CoefficientY);
                             //Перенос пикселей исходника по новым координатам в промежуточный массив 
                             bitmapAsArrayOfColors.TempArrayOfColors1[i1, j1] = bitmapAsArrayOfColors.ArrayOfColors[i, j];//
                         }
             }
-            else if (KoefficientX <= 2 && KoefficientY > 2)
+            else if (CoefficientX <= 2 && CoefficientY > 2)
             {
                 for (int i = 0; i < width; i++)
                     for (int j = 0; j < height; j++)
                         if (ColorsComparer.CompareColors(bitmapAsArrayOfColors.ArrayOfColors[i, j], Color.Black))
                         {
-                            i1 = (int)Math.Round((double)i * KoefficientX);
+                            i1 = (int)Math.Round((double)i * CoefficientX);
                             j1 = (int)Math.Round((double)j * 2);
                             //Перенос пикселей исходника по новым координатам в промежуточный массив 
                             bitmapAsArrayOfColors.TempArrayOfColors1[i1, j1] = bitmapAsArrayOfColors.ArrayOfColors[i, j];//
                         }
             }
-            else if (KoefficientX > 2 && KoefficientY <= 2)
+            else if (CoefficientX > 2 && CoefficientY <= 2)
             {
                 for (int i = 0; i < width; i++)
                     for (int j = 0; j < height; j++)
                         if (ColorsComparer.CompareColors(bitmapAsArrayOfColors.ArrayOfColors[i, j], Color.Black))
                         {
                             i1 = (int)Math.Round((double)i * 2);
-                            j1 = (int)Math.Round((double)j * KoefficientY);
+                            j1 = (int)Math.Round((double)j * CoefficientY);
                             //Перенос пикселей исходника по новым координатам в пром.массив 840х600 пикселей
                             bitmapAsArrayOfColors.TempArrayOfColors1[i1, j1] = bitmapAsArrayOfColors.ArrayOfColors[i, j];//
                         }
@@ -115,16 +118,17 @@ namespace SymbolRecognizer
                         }
             }
 
-            UstraneniyaPolos();//Устранение белых полос
-            Sdvig();//Сдвиг отредактированного изображения в исходный раб.массив
+            RemoveWhiteLines();//Устранение белых полос
+            MoveScaledImageToWorkspace();//Сдвиг отредактированного изображения в исходный раб.массив
         }
 
         //Устранение белых полос из изображения 
-        public void UstraneniyaPolos()
-        {//(покачто без учета граничных случаев(или с??))
+        public void RemoveWhiteLines()
+        {
             for (int i = 1; i < TempWidthOfWorkWindow - 1; i++)
                 for (int j = 1; j < TempHeightOfWorkWindow - 1; j++)
-                {//Проверяет соседние(лево/право)пиксели на одновременную схожесть с действующим(после процедуры должны остаться горизонтальные полосы)
+                {
+                    //Проверяет соседние(лево/право)пиксели на одновременную схожесть с действующим(после процедуры должны остаться горизонтальные полосы)
                     if (!(ColorsComparer.CompareColors(bitmapAsArrayOfColors.TempArrayOfColors1[i, j], bitmapAsArrayOfColors.TempArrayOfColors1[i + 1, j]))
                      && !(ColorsComparer.CompareColors(bitmapAsArrayOfColors.TempArrayOfColors1[i, j], bitmapAsArrayOfColors.TempArrayOfColors1[i - 1, j])))
                     {
@@ -143,7 +147,7 @@ namespace SymbolRecognizer
         }
 
         //Сдвиг отмасштабированного изображения в раб.область
-        public void Sdvig()
+        public void MoveScaledImageToWorkspace()
         {
             int mostLeft = TempWidthOfWorkWindow;
             int mostTop = TempHeightOfWorkWindow;
@@ -171,7 +175,7 @@ namespace SymbolRecognizer
         }
 
         //Повторение масштабирования до выравнивания с раб.областью   
-        public void Chislo_povtorenii()
+        public void RepeatScaling()
         {
             int mostRight;//Аргументы для процедуры вычисления крайних i,j
             int mostDown;
@@ -180,14 +184,15 @@ namespace SymbolRecognizer
 
             while (true)//Если иображение отмасштабировано крайние i,j будут примерно равны границам рабочей области 
             {
-                Masshtabirovanie();
-                Tsentrovka_Koefficienti(out mostLeft, out mostTop, out mostRight, out mostDown);//Получение крайних координат, чтобы определить заняло ли изображение все пространство
+                BeginScale();
+                //Получение крайних координат, чтобы определить заняло ли изображение все пространство
+                FindScalingCoefficients(out mostLeft, out mostTop, out mostRight, out mostDown);
                 if ((mostLeft - 10 <= 0) && (mostTop - 10 <= 0) && (mostRight + 10 >= width) && (mostDown + 10 >= height))
                     break;//Если заняло то цикл масштабирований заканчивается
                 
                 //P.S. Без устранения белых полос каждую итерацию данная проверка может уйти в бесконечность на тонких линиях у краёв рабочей области,
                 //т.к. полосы будут увеличиваться каждую итерацию и ряды черных пикселей в определенный момент увеличения будут выскакивать за рабочую область,
-                //из -за чего новая рамка границ изображения все время будет оставаться внутри рабочей области не доходя до её границ
+                //из-за чего новая рамка границ изображения все время будет оставаться внутри рабочей области не доходя до её границ
             }
         }
     }
