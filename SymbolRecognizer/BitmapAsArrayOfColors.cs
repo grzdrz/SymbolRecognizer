@@ -11,8 +11,8 @@ namespace SymbolRecognizer
     {
         public int width;
         public int height;
-        private int TempWidthOfWorkWindow;
-        private int TempHeightOfWorkWindow;
+        public int TempWidthOfWorkWindow;
+        public int TempHeightOfWorkWindow;
 
         public Color[,] ArrayOfColors;
         public Color[,] TempArrayOfColors1;
