@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace SymbolRecognizer
 {
-    public class SymbolContainer
+    public class ImageData
     {
-        public Color[,] arrayOfColors;
+        public Bitmap Bitmap;
         public string symbolName;
     }
 }
