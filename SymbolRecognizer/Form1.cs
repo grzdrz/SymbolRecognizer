@@ -28,13 +28,17 @@ namespace SymbolRecognizer
         Color[,] pixels1Drawn;
         Color[,] pixels2Drawn;
 
-        public List<ImageData> IdentifiedImages = new List<ImageData>();
+        public List<ImageData> IdentifiedImages;// = new List<ImageData>();
+
+        public string PathToSerializedIdentifiedImages = @"..\..\SerializedImageData\ImageData.txt";
 
         Form2 form2;
 
         public Form1()
         {
             InitializeComponent();
+            IdentifiedImages = DeserializeIdentifiedImages();
+            if (IdentifiedImages is null) IdentifiedImages = new List<ImageData>();
 
             WidthOfDrawn = pictureBox1.Width;
             HeightOfDrawn = pictureBox1.Height;
@@ -54,11 +58,10 @@ namespace SymbolRecognizer
             button1_Scale.Click += button1_Click_Scale;
             button2_Analyze.Click += button2_Click_Analyze;
             button3_Clean.Click += button3_Click_Clean;
-
-            button6_TESTSave.Click += button6_Click_SaveImage;///////////////
+            button6_TESTSave.Click += button6_Click_SaveImage
         }
 
-        //масштабируем
+        //масштабирует
         public void button1_Click_Scale(object sender, EventArgs args)
         {
             pixels1Drawn = bitmap1Drawn.BitmapToArray();
@@ -71,7 +74,7 @@ namespace SymbolRecognizer
             button2_Analyze.Enabled = true;
         }
 
-        //идентифицируем символ
+        //идентифицирует символ
         public void button2_Click_Analyze(object sender, EventArgs args)
         {
             this.Enabled = false;
@@ -79,10 +82,39 @@ namespace SymbolRecognizer
             form2.Show();
         }
 
-        //заливаем белым область рисования
+        //заливает белым область рисования
         public void button3_Click_Clean(object sender, EventArgs args)
         {
             canvas.FillRectangle(Brushes.White, new Rectangle(0, 0, pictureBox1.Width, pictureBox1.Height));
+        }
+
+        private void button6_Click_SaveImage(object sender, EventArgs e)
+        {
+            SerializeIdentifiedImages();
+            MessageBox.Show("Данные обновлены");
+        }
+
+        public void SerializeIdentifiedImages()
+        {
+            string data = Newtonsoft.Json.JsonConvert.SerializeObject(IdentifiedImages, new ImageConverter());
+            using (FileStream stream = new FileStream(PathToSerializedIdentifiedImages, FileMode.Create, FileAccess.Write))
+            {
+                using (StreamWriter sw = new StreamWriter(stream))
+                {
+                    sw.WriteLine(data);
+                }
+            }
+        }
+        public List<ImageData> DeserializeIdentifiedImages()
+        {
+            using (FileStream stream = new FileStream(PathToSerializedIdentifiedImages, FileMode.Open, FileAccess.Read))
+            {
+                using (StreamReader sr = new StreamReader(stream))
+                {
+                    string data = sr.ReadToEnd();
+                    return Newtonsoft.Json.JsonConvert.DeserializeObject<List<ImageData>>(data, new ImageConverter());
+                }
+            }
         }
 
         #region "Рисование"
@@ -98,7 +130,6 @@ namespace SymbolRecognizer
             }
             pictureBox1.Image = bitmap1Drawn;
         }
-
         public void pictureBox1_MouseMove_Draw(object sender, MouseEventArgs args)
         {
             if (args.Button == MouseButtons.Left)
@@ -112,24 +143,5 @@ namespace SymbolRecognizer
             pictureBox1.Image = bitmap1Drawn;
         }
         #endregion
-
-        //TEST
-        private void button6_Click_SaveImage(object sender, EventArgs e)
-        {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.CheckFileExists = false;
-            saveFileDialog.AddExtension = true;
-            saveFileDialog.Filter = "PNG files (*.png)|*.png";
-
-            DialogResult showDialogResult = saveFileDialog.ShowDialog();
-            if (showDialogResult == DialogResult.Cancel)
-                return;
-            if (showDialogResult == System.Windows.Forms.DialogResult.OK)
-                using (FileStream stream = new FileStream(saveFileDialog.FileName, FileMode.Create))
-                {
-                    bitmap2Drawn.Save(stream, ImageFormat.Png);
-                }
-            MessageBox.Show("Файл сохранен");
-        }
     }
 }

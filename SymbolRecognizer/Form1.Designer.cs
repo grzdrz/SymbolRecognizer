@@ -52,7 +52,7 @@
             this.button1_Scale.Name = "button1_Scale";
             this.button1_Scale.Size = new System.Drawing.Size(100, 50);
             this.button1_Scale.TabIndex = 1;
-            this.button1_Scale.Text = "Apply scale";
+            this.button1_Scale.Text = "Apply scaling";
             this.button1_Scale.UseVisualStyleBackColor = true;
             // 
             // pictureBox2
@@ -66,9 +66,9 @@
             // button2_Analyze
             // 
             this.button2_Analyze.Enabled = false;
-            this.button2_Analyze.Location = new System.Drawing.Point(375, 356);
+            this.button2_Analyze.Location = new System.Drawing.Point(374, 356);
             this.button2_Analyze.Name = "button2_Analyze";
-            this.button2_Analyze.Size = new System.Drawing.Size(150, 50);
+            this.button2_Analyze.Size = new System.Drawing.Size(249, 50);
             this.button2_Analyze.TabIndex = 3;
             this.button2_Analyze.Text = "Analyze";
             this.button2_Analyze.UseVisualStyleBackColor = true;
@@ -77,25 +77,25 @@
             // 
             this.button3_Clean.Location = new System.Drawing.Point(12, 356);
             this.button3_Clean.Name = "button3_Clean";
-            this.button3_Clean.Size = new System.Drawing.Size(150, 50);
+            this.button3_Clean.Size = new System.Drawing.Size(250, 50);
             this.button3_Clean.TabIndex = 6;
             this.button3_Clean.Text = "Clean";
             this.button3_Clean.UseVisualStyleBackColor = true;
             // 
             // button6_TESTSave
             // 
-            this.button6_TESTSave.Location = new System.Drawing.Point(169, 355);
+            this.button6_TESTSave.Location = new System.Drawing.Point(374, 412);
             this.button6_TESTSave.Name = "button6_TESTSave";
-            this.button6_TESTSave.Size = new System.Drawing.Size(93, 50);
+            this.button6_TESTSave.Size = new System.Drawing.Size(250, 50);
             this.button6_TESTSave.TabIndex = 9;
-            this.button6_TESTSave.Text = "TESTSave";
+            this.button6_TESTSave.Text = "Save";
             this.button6_TESTSave.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(635, 450);
+            this.ClientSize = new System.Drawing.Size(635, 470);
             this.Controls.Add(this.button6_TESTSave);
             this.Controls.Add(this.button3_Clean);
             this.Controls.Add(this.button2_Analyze);

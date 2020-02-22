@@ -28,3 +28,6 @@ C:\Users\space\Music\SymbolRecognizer\SymbolRecognizer\obj\Debug\SymbolRecognize
 C:\Users\space\Music\SymbolRecognizer\SymbolRecognizer\obj\Debug\SymbolRecognizer.exe
 C:\Users\space\Music\SymbolRecognizer\SymbolRecognizer\obj\Debug\SymbolRecognizer.pdb
 C:\Users\space\Music\SymbolRecognizer\SymbolRecognizer\obj\Debug\SymbolRecognizer.Form2.resources
+C:\Users\space\Music\SymbolRecognizer\SymbolRecognizer\bin\Debug\Newtonsoft.Json.dll
+C:\Users\space\Music\SymbolRecognizer\SymbolRecognizer\bin\Debug\Newtonsoft.Json.xml
+C:\Users\space\Music\SymbolRecognizer\SymbolRecognizer\obj\Debug\SymbolRecognizer.csproj.CopyComplete

@@ -25,6 +25,8 @@ namespace SymbolRecognizer
             button1_Approve.Click += button1_Approve_Click;
 
             IdentifyImage();
+
+            this.FormClosed += (sender, args) => { MainForm.Enabled = true; };
         }
 
         public void IdentifyImage()
@@ -49,7 +51,7 @@ namespace SymbolRecognizer
 
             for (int i = 0; i < MainForm.IdentifiedImages.Count; i++)
             {
-                pixelMatchPercentage = CalculatePixelMatchPercentage(MainForm.IdentifiedImages[i].Bitmap, MainForm.bitmap2Drawn);
+                pixelMatchPercentage = CalculatePixelMatchPercentage(MainForm.IdentifiedImages[i].BitmapImage, MainForm.bitmap2Drawn);
                 textBox1_DataOfCompare.Text += String.Format(
                     "Совпадает на {0}% с изображением {1}", pixelMatchPercentage, MainForm.IdentifiedImages[i].symbolName);
                 textBox1_DataOfCompare.Text += Environment.NewLine;
@@ -155,7 +157,7 @@ namespace SymbolRecognizer
             var imageData = new ImageData()
             {
                 symbolName = textBox2.Text,
-                Bitmap = MainForm.bitmap2Drawn
+                BitmapImage = MainForm.bitmap2Drawn
             };
             MainForm.IdentifiedImages.Add(imageData);
 
