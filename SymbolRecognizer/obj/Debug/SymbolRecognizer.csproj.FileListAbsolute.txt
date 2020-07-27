@@ -31,3 +31,4 @@ C:\Users\space\Music\SymbolRecognizer\SymbolRecognizer\obj\Debug\SymbolRecognize
 C:\Users\space\Music\SymbolRecognizer\SymbolRecognizer\bin\Debug\Newtonsoft.Json.dll
 C:\Users\space\Music\SymbolRecognizer\SymbolRecognizer\bin\Debug\Newtonsoft.Json.xml
 C:\Users\space\Music\SymbolRecognizer\SymbolRecognizer\obj\Debug\SymbolRecognizer.csproj.CopyComplete
+C:\Users\space\Music\SymbolRecognizer\SymbolRecognizer\obj\Debug\SymbolRecognizer.csproj.CoreCompileInputs.cache

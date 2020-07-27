@@ -1,0 +1,13 @@
+C:\Users\space\Music\SymbolRecognizer\SymbolRecognizer\bin\Release\SymbolRecognizer.exe.config
+C:\Users\space\Music\SymbolRecognizer\SymbolRecognizer\bin\Release\SymbolRecognizer.exe
+C:\Users\space\Music\SymbolRecognizer\SymbolRecognizer\bin\Release\SymbolRecognizer.pdb
+C:\Users\space\Music\SymbolRecognizer\SymbolRecognizer\bin\Release\Newtonsoft.Json.dll
+C:\Users\space\Music\SymbolRecognizer\SymbolRecognizer\bin\Release\Newtonsoft.Json.xml
+C:\Users\space\Music\SymbolRecognizer\SymbolRecognizer\obj\Release\SymbolRecognizer.Form1.resources
+C:\Users\space\Music\SymbolRecognizer\SymbolRecognizer\obj\Release\SymbolRecognizer.Form2.resources
+C:\Users\space\Music\SymbolRecognizer\SymbolRecognizer\obj\Release\SymbolRecognizer.Properties.Resources.resources
+C:\Users\space\Music\SymbolRecognizer\SymbolRecognizer\obj\Release\SymbolRecognizer.csproj.GenerateResource.cache
+C:\Users\space\Music\SymbolRecognizer\SymbolRecognizer\obj\Release\SymbolRecognizer.csproj.CoreCompileInputs.cache
+C:\Users\space\Music\SymbolRecognizer\SymbolRecognizer\obj\Release\SymbolRecognizer.csproj.CopyComplete
+C:\Users\space\Music\SymbolRecognizer\SymbolRecognizer\obj\Release\SymbolRecognizer.exe
+C:\Users\space\Music\SymbolRecognizer\SymbolRecognizer\obj\Release\SymbolRecognizer.pdb

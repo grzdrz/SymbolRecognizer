@@ -30,7 +30,7 @@ namespace SymbolRecognizer
 
         public List<ImageData> IdentifiedImages;// = new List<ImageData>();
 
-        public string PathToSerializedIdentifiedImages = @"..\..\SerializedImageData\ImageData.txt";
+        public string PathToSerializedIdentifiedImages = @"./SerializedImageData/ImageData.txt";
 
         Form2 form2;
 
@@ -58,7 +58,7 @@ namespace SymbolRecognizer
             button1_Scale.Click += button1_Click_Scale;
             button2_Analyze.Click += button2_Click_Analyze;
             button3_Clean.Click += button3_Click_Clean;
-            button6_TESTSave.Click += button6_Click_SaveImage
+            button6_TESTSave.Click += button6_Click_SaveImage;
         }
 
         //масштабирует
@@ -105,6 +105,7 @@ namespace SymbolRecognizer
                 }
             }
         }
+
         public List<ImageData> DeserializeIdentifiedImages()
         {
             using (FileStream stream = new FileStream(PathToSerializedIdentifiedImages, FileMode.Open, FileAccess.Read))
@@ -130,6 +131,7 @@ namespace SymbolRecognizer
             }
             pictureBox1.Image = bitmap1Drawn;
         }
+
         public void pictureBox1_MouseMove_Draw(object sender, MouseEventArgs args)
         {
             if (args.Button == MouseButtons.Left)
